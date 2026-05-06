@@ -157,31 +157,31 @@ O projeto usa [spec-kit](https://github.com/github/spec-kit) para planejamento e
 ### Fluxo principal (greenfield — feature nova)
 
 ```
-Constituir → Especificar → Clarificar → Planejar → Detalhar Tarefas → Implementar
+Constituir → Especificar → Clarificar (opcional) → Planejar → Analisar (opcional) → Tarefas → Implementar
 ```
 
 #### Core Commands
 
 Comandos essenciais para o fluxo SDD:
 
-| Comando | Agent Skill | Descrição |
-|---|---|---|
-| `/speckit.constitution` | speckit-constitution | Criar ou atualizar princípios de governança e diretrizes de desenvolvimento do projeto |
-| `/speckit.specify` | speckit-specify | Definir o que construir (requisitos e user stories) |
-| `/speckit.plan` | speckit-plan | Criar planos técnicos de implementação com o stack escolhido |
-| `/speckit.tasks` | speckit-tasks | Gerar listas de tarefas acionáveis para implementação |
-| `/speckit.taskstoissues` | speckit-taskstoissues | Converter listas de tarefas em GitHub Issues para rastreamento e execução |
-| `/speckit.implement` | speckit-implement | Executar todas as tarefas para construir a feature conforme o plano |
+| Etapa | Comando | Agent Skill | Descrição |
+|---|---|---|---|
+| **Constituir** | `/speckit.constitution` | speckit-constitution | Criar ou atualizar princípios de governança e diretrizes de desenvolvimento do projeto |
+| **Especificar** | `/speckit.specify` | speckit-specify | Definir o que construir (requisitos e user stories) |
+| **Planejar** | `/speckit.plan` | speckit-plan | Criar planos técnicos de implementação com o stack escolhido |
+| **Tarefas** | `/speckit.tasks` | speckit-tasks | Gerar listas de tarefas acionáveis para implementação |
+| **Issues** | `/speckit.taskstoissues` | speckit-taskstoissues | Converter listas de tarefas em GitHub Issues para rastreamento e execução |
+| **Implementar** | `/speckit.implement` | speckit-implement | Executar todas as tarefas para construir a feature conforme o plano |
 
 #### Optional Commands
 
 Comandos adicionais para qualidade e validação aprimoradas:
 
-| Comando | Agent Skill | Descrição |
-|---|---|---|
-| `/speckit.clarify` | speckit-clarify | Clarificar áreas subespecificadas (recomendado antes de `/speckit.plan`) |
-| `/speckit.analyze` | speckit-analyze | Análise de consistência e cobertura entre artefatos (execute após `/speckit.tasks`, antes de `/speckit.implement`) |
-| `/speckit.checklist` | speckit-checklist | Gerar checklists de qualidade customizados que validam completude, clareza e consistência dos requisitos |
+| Etapa | Comando | Agent Skill | Descrição |
+|---|---|---|---|
+| **Clarificar** | `/speckit.clarify` | speckit-clarify | Clarificar áreas subespecificadas (recomendado antes de `/speckit.plan`) |
+| **Analisar** | `/speckit.analyze` | speckit-analyze | Análise de consistência e cobertura entre artefatos (execute após `/speckit.tasks`, antes de `/speckit.implement`) |
+| **Checklist** | `/speckit.checklist` | speckit-checklist | Gerar checklists de qualidade customizados que validam completude, clareza e consistência dos requisitos |
 
 ### Resumo do fluxo com comandos
 
@@ -220,7 +220,7 @@ A extensão [spec-kit-brownfield](https://github.com/Quratulain-bilal/spec-kit-b
 ### Fluxo brownfield (adotar SDD em projeto existente)
 
 ```
-Escanear → Configurar → Validar → Migrar features antigas → continuar com fluxo normal
+Escanear → Configurar → Validar → Migrar (features antigas) → continuar com fluxo normal
 ```
 
 | Etapa | Comando | Modifica arquivos? | O que faz |
