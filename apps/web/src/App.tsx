@@ -1,19 +1,55 @@
-import { Button } from "@workspace/ui/components/button"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { LoginPage } from "@/features/auth/login-page.tsx"
+import { ProtectedRoute } from "@/features/auth/protected-route.tsx"
+import { AppShell } from "@/features/auth/app-shell.tsx"
+import { useAuth } from "@/features/auth/auth-provider.tsx"
+
+function PublicLoginRoute() {
+  const { state } = useAuth()
+
+  if (state.status === "loading") {
+    return (
+      <div className="flex min-h-svh items-center justify-center">
+        <span className="text-muted-foreground text-sm">Carregando…</span>
+      </div>
+    )
+  }
+
+  if (state.status === "authenticated") {
+    return <Navigate to="/" replace />
+  }
+
+  return <LoginPage />
+}
+
+function HomePage() {
+  return (
+    <div className="space-y-4">
+      <h1 className="text-xl font-semibold">Início</h1>
+      <p className="text-muted-foreground text-sm">
+        Bem-vindo! Você está autenticado.
+      </p>
+    </div>
+  )
+}
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="text-muted-foreground font-mono text-xs">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<PublicLoginRoute />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AppShell>
+                <HomePage />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   )
 }

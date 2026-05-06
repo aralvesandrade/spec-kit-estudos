@@ -1,4 +1,6 @@
 <!-- SPECKIT START -->
-For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+Current implementation plan: /specs/001-login-authentication/plan.md
 <!-- SPECKIT END -->
+
+Sempre responda em português do Brasil.
+Use linguagem clara, técnica quando necessário, e evite traduções literais do inglês.
