@@ -152,14 +152,113 @@ A skill fica disponível em `.agents/skills/caveman/`. Ative com: `caveman mode`
 
 ## Ferramentas de agente (spec-kit)
 
-O projeto usa [spec-kit](https://github.com/github/spec-kit) para planejamento estruturado de features. O fluxo de trabalho é:
+O projeto usa [spec-kit](https://github.com/github/spec-kit) para planejamento estruturado de features seguindo o fluxo **SDD — Specification-Driven Development**. Todos os artefatos gerados ficam em `.specify/specs/<feature>/`.
 
-1. `/speckit.specify` — Criar especificação da feature
-2. `/speckit.plan` — Gerar plano de implementação
-3. `/speckit.tasks` — Gerar lista de tarefas
-4. Agente implementa seguindo as tasks
+### Fluxo principal (greenfield — feature nova)
 
-Configuração em `.specify/` e instruções do agente em `.github/copilot-instructions.md`.
+```
+Constituir → Especificar → Clarificar → Planejar → Detalhar Tarefas → Implementar
+```
+
+| Etapa | Comando | Obrigatório | O que gera |
+|---|---|---|---|
+| **Constituir** | `/speckit.constitution` | Sim (1x por projeto) | `.specify/constitution.md` — regras e princípios do projeto |
+| **Especificar** | `/speckit.specify` | Sim | `spec.md` — user stories, requisitos, critérios de aceite |
+| **Clarificar** | `/speckit.clarify` | Opcional | Perguntas e respostas que refinam o `spec.md` |
+| **Analisar** | `/speckit.analyze` | Opcional | Análise do código existente para embasar o plano |
+| **Planejar** | `/speckit.plan` | Sim | `plan.md` — abordagem técnica, módulos afetados, decisões |
+| **Tarefas** | `/speckit.tasks` | Sim | `tasks.md` — lista de tarefas atômicas com IDs e dependências |
+| **Checklist** | `/speckit.checklist` | Opcional | `checklist.md` — gates de qualidade antes de implementar |
+| **Implementar** | `/speckit.implement` | Sim | Código — o agente executa as tasks do `tasks.md` |
+| **Issues** | `/speckit.taskstoissues` | Opcional | Cria GitHub Issues a partir do `tasks.md` |
+
+> **Dica**: Os comandos opcionais enriquecem os artefatos. `/speckit.clarify` antes de planejar evita retrabalho. `/speckit.analyze` é útil quando a feature toca código existente complexo.
+
+### Resumo do fluxo com comandos
+
+```
+1. /speckit.constitution          ← (só na primeira vez) define regras do projeto
+
+2. /speckit.specify "descrição"   ← descreve o que construir → gera spec.md
+   /speckit.clarify               ← (opcional) refina spec com perguntas/respostas
+
+3. /speckit.analyze               ← (opcional) analisa codebase relacionado
+   /speckit.plan                  ← gera plano técnico → plan.md
+
+4. /speckit.checklist             ← (opcional) gates de qualidade
+   /speckit.tasks                 ← quebra em tarefas atômicas → tasks.md
+   /speckit.taskstoissues         ← (opcional) cria GitHub Issues das tarefas
+
+5. /speckit.implement             ← agente executa as tasks
+```
+
+### Workflow automatizado (todos os passos de uma vez)
+
+O workflow `speckit` executa specify → plan → tasks → implement com gates de revisão entre cada etapa:
+
+```
+/speckit.workflow "descrição da feature"
+```
+
+Configuração do workflow em `.specify/workflows/speckit/workflow.yml`.
+
+---
+
+## Extensão Brownfield
+
+A extensão [spec-kit-brownfield](https://github.com/Quratulain-bilal/spec-kit-brownfield) resolve o problema de adotar SDD em projetos **já existentes**: os templates genéricos do spec-kit não refletem o stack real, convenções e limites de módulos do projeto. A extensão descobre tudo isso automaticamente.
+
+### Fluxo brownfield (adotar SDD em projeto existente)
+
+```
+Escanear → Configurar → Validar → Migrar features antigas → continuar com fluxo normal
+```
+
+| Etapa | Comando | Modifica arquivos? | O que faz |
+|---|---|---|---|
+| **Escanear** | `/speckit.brownfield.scan` | Não (somente leitura) | Detecta stack, frameworks, arquitetura, convenções de nomenclatura, padrões de branch e commit |
+| **Configurar** | `/speckit.brownfield.bootstrap` | Sim | Gera `constitution.md`, templates e `AGENTS.md` adaptados ao projeto real |
+| **Validar** | `/speckit.brownfield.validate` | Não (somente leitura) | Verifica se o que foi gerado corresponde à estrutura real; detecta drift |
+| **Migrar** | `/speckit.brownfield.migrate` | Sim | Reverse-engineer de `spec.md`, `plan.md` e `tasks.md` para features já implementadas |
+
+### Resumo do fluxo brownfield com comandos
+
+```
+1. /speckit.brownfield.scan       ← lê o projeto e monta perfil técnico
+                                    (stack, arquitetura, módulos, convenções)
+
+2. /speckit.brownfield.bootstrap  ← gera constituição e templates sob medida
+                                    para o projeto (não templates genéricos)
+
+3. /speckit.brownfield.validate   ← verifica se a configuração gerada bate
+                                    com a estrutura real do projeto
+
+4. /speckit.brownfield.migrate "feature X"
+                                  ← reconstrói spec/plan/tasks de uma feature
+                                    já existente (todas as tasks já marcadas ✓)
+                                    e aponta gaps (sem testes, sem error handling...)
+
+5. Fluxo normal SDD a partir daqui →
+   /speckit.specify → /speckit.plan → /speckit.tasks → /speckit.implement
+```
+
+> O comando `/speckit.brownfield.scan` roda automaticamente como hook opcional após `specify init` — é a porta de entrada recomendada para qualquer projeto existente.
+
+### O que o scan detecta neste projeto
+
+Ao rodar `/speckit.brownfield.scan` neste repositório, o resultado seria:
+
+```
+Project Profile
+├── Tipo: Monorepo (npm workspaces + Turborepo)
+├── Linguagem: TypeScript
+├── Frontend: React 19, Vite 7, TailwindCSS 4
+├── Componentes: shadcn/ui (Radix UI + CVA)
+├── Módulos: apps/web, packages/ui
+├── Package manager: npm 11
+├── Naming convention: kebab-case
+└── CI/CD: não detectado
+```
 
 ---
 
