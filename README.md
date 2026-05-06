@@ -160,19 +160,28 @@ O projeto usa [spec-kit](https://github.com/github/spec-kit) para planejamento e
 Constituir → Especificar → Clarificar → Planejar → Detalhar Tarefas → Implementar
 ```
 
-| Etapa | Comando | Obrigatório | O que gera |
-|---|---|---|---|
-| **Constituir** | `/speckit.constitution` | Sim (1x por projeto) | `.specify/constitution.md` — regras e princípios do projeto |
-| **Especificar** | `/speckit.specify` | Sim | `spec.md` — user stories, requisitos, critérios de aceite |
-| **Clarificar** | `/speckit.clarify` | Opcional | Perguntas e respostas que refinam o `spec.md` |
-| **Analisar** | `/speckit.analyze` | Opcional | Análise do código existente para embasar o plano |
-| **Planejar** | `/speckit.plan` | Sim | `plan.md` — abordagem técnica, módulos afetados, decisões |
-| **Tarefas** | `/speckit.tasks` | Sim | `tasks.md` — lista de tarefas atômicas com IDs e dependências |
-| **Checklist** | `/speckit.checklist` | Opcional | `checklist.md` — gates de qualidade antes de implementar |
-| **Implementar** | `/speckit.implement` | Sim | Código — o agente executa as tasks do `tasks.md` |
-| **Issues** | `/speckit.taskstoissues` | Opcional | Cria GitHub Issues a partir do `tasks.md` |
+#### Core Commands
 
-> **Dica**: Os comandos opcionais enriquecem os artefatos. `/speckit.clarify` antes de planejar evita retrabalho. `/speckit.analyze` é útil quando a feature toca código existente complexo.
+Comandos essenciais para o fluxo SDD:
+
+| Comando | Agent Skill | Descrição |
+|---|---|---|
+| `/speckit.constitution` | speckit-constitution | Criar ou atualizar princípios de governança e diretrizes de desenvolvimento do projeto |
+| `/speckit.specify` | speckit-specify | Definir o que construir (requisitos e user stories) |
+| `/speckit.plan` | speckit-plan | Criar planos técnicos de implementação com o stack escolhido |
+| `/speckit.tasks` | speckit-tasks | Gerar listas de tarefas acionáveis para implementação |
+| `/speckit.taskstoissues` | speckit-taskstoissues | Converter listas de tarefas em GitHub Issues para rastreamento e execução |
+| `/speckit.implement` | speckit-implement | Executar todas as tarefas para construir a feature conforme o plano |
+
+#### Optional Commands
+
+Comandos adicionais para qualidade e validação aprimoradas:
+
+| Comando | Agent Skill | Descrição |
+|---|---|---|
+| `/speckit.clarify` | speckit-clarify | Clarificar áreas subespecificadas (recomendado antes de `/speckit.plan`) |
+| `/speckit.analyze` | speckit-analyze | Análise de consistência e cobertura entre artefatos (execute após `/speckit.tasks`, antes de `/speckit.implement`) |
+| `/speckit.checklist` | speckit-checklist | Gerar checklists de qualidade customizados que validam completude, clareza e consistência dos requisitos |
 
 ### Resumo do fluxo com comandos
 
@@ -182,10 +191,10 @@ Constituir → Especificar → Clarificar → Planejar → Detalhar Tarefas → 
 2. /speckit.specify "descrição"   ← descreve o que construir → gera spec.md
    /speckit.clarify               ← (opcional) refina spec com perguntas/respostas
 
-3. /speckit.analyze               ← (opcional) analisa codebase relacionado
-   /speckit.plan                  ← gera plano técnico → plan.md
+3. /speckit.plan                  ← gera plano técnico → plan.md
 
-4. /speckit.checklist             ← (opcional) gates de qualidade
+4. /speckit.analyze               ← (opcional) análise de consistência entre artefatos
+   /speckit.checklist             ← (opcional) gates de qualidade
    /speckit.tasks                 ← quebra em tarefas atômicas → tasks.md
    /speckit.taskstoissues         ← (opcional) cria GitHub Issues das tarefas
 
