@@ -1,6 +1,9 @@
 import type { Request, Response } from "express"
 import { loginUser } from "./login-service.ts"
-import { validateAndRefreshSession, revokeUserSession } from "./session-service.ts"
+import {
+  validateAndRefreshSession,
+  revokeUserSession,
+} from "./session-service.ts"
 import { findUserById } from "./auth-repository.ts"
 import { makeError } from "./auth-errors.ts"
 

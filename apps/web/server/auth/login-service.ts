@@ -1,9 +1,6 @@
 import bcrypt from "bcryptjs"
 import { v4 as uuidv4 } from "uuid"
-import {
-  findUserByEmail,
-  recordAuthAttempt,
-} from "./auth-repository.ts"
+import { findUserByEmail, recordAuthAttempt } from "./auth-repository.ts"
 import { createNewSession } from "./session-service.ts"
 import { makeError } from "./auth-errors.ts"
 
@@ -15,7 +12,10 @@ function normalizeEmail(email: string): string {
 
 export async function loginUser(rawEmail: string, rawPassword: string) {
   if (!rawEmail || !rawPassword) {
-    return { authenticated: false as const, error: makeError("validation-error") }
+    return {
+      authenticated: false as const,
+      error: makeError("validation-error"),
+    }
   }
 
   const email = normalizeEmail(rawEmail)
@@ -29,7 +29,10 @@ export async function loginUser(rawEmail: string, rawPassword: string) {
       failure_reason: "validation-error",
       attempted_at: new Date().toISOString(),
     })
-    return { authenticated: false as const, error: makeError("validation-error") }
+    return {
+      authenticated: false as const,
+      error: makeError("validation-error"),
+    }
   }
 
   let user
@@ -44,7 +47,10 @@ export async function loginUser(rawEmail: string, rawPassword: string) {
       failure_reason: "storage-unavailable",
       attempted_at: new Date().toISOString(),
     })
-    return { authenticated: false as const, error: makeError("storage-unavailable") }
+    return {
+      authenticated: false as const,
+      error: makeError("storage-unavailable"),
+    }
   }
 
   if (!user) {
@@ -56,7 +62,10 @@ export async function loginUser(rawEmail: string, rawPassword: string) {
       failure_reason: "invalid-credentials",
       attempted_at: new Date().toISOString(),
     })
-    return { authenticated: false as const, error: makeError("invalid-credentials") }
+    return {
+      authenticated: false as const,
+      error: makeError("invalid-credentials"),
+    }
   }
 
   const passwordMatch = await bcrypt.compare(rawPassword, user.password_hash)
@@ -69,7 +78,10 @@ export async function loginUser(rawEmail: string, rawPassword: string) {
       failure_reason: "invalid-credentials",
       attempted_at: new Date().toISOString(),
     })
-    return { authenticated: false as const, error: makeError("invalid-credentials") }
+    return {
+      authenticated: false as const,
+      error: makeError("invalid-credentials"),
+    }
   }
 
   const session = createNewSession(user.id)

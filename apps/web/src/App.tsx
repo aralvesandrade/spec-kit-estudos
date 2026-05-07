@@ -13,7 +13,7 @@ function PublicLoginRoute() {
   if (state.status === "loading") {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <span className="text-muted-foreground text-sm">Carregando…</span>
+        <span className="text-sm text-muted-foreground">Carregando…</span>
       </div>
     )
   }
@@ -29,7 +29,7 @@ function HomePage() {
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Início</h1>
-      <p className="text-muted-foreground text-sm">
+      <p className="text-sm text-muted-foreground">
         Bem-vindo! Você está autenticado.
       </p>
     </div>

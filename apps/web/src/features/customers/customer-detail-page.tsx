@@ -33,7 +33,7 @@ export function CustomerDetailPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <span className="text-muted-foreground text-sm">Carregando…</span>
+        <span className="text-sm text-muted-foreground">Carregando…</span>
       </div>
     )
   }
@@ -41,10 +41,13 @@ export function CustomerDetailPage() {
   if (error || !customer) {
     return (
       <div className="space-y-4">
-        <Link to="/clientes" className="text-muted-foreground hover:text-foreground text-sm">
+        <Link
+          to="/clientes"
+          className="text-sm text-muted-foreground hover:text-foreground"
+        >
           ← Voltar para clientes
         </Link>
-        <p className="text-destructive text-sm">
+        <p className="text-sm text-destructive">
           {error ?? "Cliente não encontrado."}
         </p>
       </div>
@@ -53,7 +56,10 @@ export function CustomerDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Link to="/clientes" className="text-muted-foreground hover:text-foreground text-sm">
+      <Link
+        to="/clientes"
+        className="text-sm text-muted-foreground hover:text-foreground"
+      >
         ← Voltar para clientes
       </Link>
 
@@ -61,22 +67,30 @@ export function CustomerDetailPage() {
 
       <dl className="divide-y rounded-md border">
         <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-muted-foreground text-sm font-medium">Nome</dt>
+          <dt className="text-sm font-medium text-muted-foreground">Nome</dt>
           <dd className="col-span-2 text-sm">{customer.name}</dd>
         </div>
         <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-muted-foreground text-sm font-medium">E-mail</dt>
+          <dt className="text-sm font-medium text-muted-foreground">E-mail</dt>
           <dd className="col-span-2 text-sm">{customer.email}</dd>
         </div>
         <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-muted-foreground text-sm font-medium">Telefone</dt>
+          <dt className="text-sm font-medium text-muted-foreground">
+            Telefone
+          </dt>
           <dd className="col-span-2 text-sm">
-            {customer.phone ?? <span className="text-muted-foreground">Não informado</span>}
+            {customer.phone ?? (
+              <span className="text-muted-foreground">Não informado</span>
+            )}
           </dd>
         </div>
         <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-muted-foreground text-sm font-medium">Data de cadastro</dt>
-          <dd className="col-span-2 text-sm">{formatDate(customer.createdAt)}</dd>
+          <dt className="text-sm font-medium text-muted-foreground">
+            Data de cadastro
+          </dt>
+          <dd className="col-span-2 text-sm">
+            {formatDate(customer.createdAt)}
+          </dd>
         </div>
       </dl>
     </div>

@@ -19,7 +19,5 @@ export async function seed(): Promise<void> {
     "INSERT INTO users (id, email, password_hash, status, source, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
   ).run(uuidv4(), SEED_EMAIL, passwordHash, "active", "seeded", now, now)
 
-  console.log(
-    `[seed] Usuário inicial criado: ${SEED_EMAIL} / ${SEED_PASSWORD}`
-  )
+  console.log(`[seed] Usuário inicial criado: ${SEED_EMAIL} / ${SEED_PASSWORD}`)
 }

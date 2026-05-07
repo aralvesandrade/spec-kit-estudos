@@ -5,8 +5,7 @@ import { useAuth } from "./auth-provider.tsx"
 export function AppShell({ children }: { children: ReactNode }) {
   const { state, logout } = useAuth()
 
-  const email =
-    state.status === "authenticated" ? state.user.email : undefined
+  const email = state.status === "authenticated" ? state.user.email : undefined
 
   function handleLogout() {
     void logout()
@@ -14,12 +13,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-svh flex-col">
-      <header className="border-border bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex h-12 max-w-5xl items-center justify-between px-6">
           <span className="text-sm font-medium">App</span>
           <div className="flex items-center gap-3">
             {email && (
-              <span className="text-muted-foreground text-xs">{email}</span>
+              <span className="text-xs text-muted-foreground">{email}</span>
             )}
             <Button variant="outline" size="sm" onClick={handleLogout}>
               Sair

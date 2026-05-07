@@ -73,10 +73,10 @@ export function CreateCustomerPage() {
             value={formData.name}
             onChange={handleChange}
             disabled={isSubmitting}
-            className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none disabled:opacity-50"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none disabled:opacity-50"
           />
           {fieldErrors.name && (
-            <p className="text-destructive text-xs">{fieldErrors.name}</p>
+            <p className="text-xs text-destructive">{fieldErrors.name}</p>
           )}
         </div>
 
@@ -91,10 +91,10 @@ export function CreateCustomerPage() {
             value={formData.email}
             onChange={handleChange}
             disabled={isSubmitting}
-            className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none disabled:opacity-50"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none disabled:opacity-50"
           />
           {fieldErrors.email && (
-            <p className="text-destructive text-xs">{fieldErrors.email}</p>
+            <p className="text-xs text-destructive">{fieldErrors.email}</p>
           )}
         </div>
 
@@ -109,15 +109,15 @@ export function CreateCustomerPage() {
             value={formData.phone}
             onChange={handleChange}
             disabled={isSubmitting}
-            className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none disabled:opacity-50"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none disabled:opacity-50"
           />
           {fieldErrors.phone && (
-            <p className="text-destructive text-xs">{fieldErrors.phone}</p>
+            <p className="text-xs text-destructive">{fieldErrors.phone}</p>
           )}
         </div>
 
         {globalError && (
-          <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
+          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
             <p>{globalError}</p>
             <button
               type="button"

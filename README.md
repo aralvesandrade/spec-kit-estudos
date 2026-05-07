@@ -277,7 +277,7 @@ Dois agentes com responsabilidades distintas:
 
 | Agente | Escopo | Build |
 |---|---|---|
-| `ui-lib` | `packages/ui/` — componentes, hooks, utils | `turbo build --filter=@workspace/ui` |
-| `web-app` | `apps/web/` — páginas, rotas, features | `turbo build --filter=web` |
+| `ui-lib` | `packages/ui/` — componentes, hooks, utils | `npm run build --filter=@workspace/ui` |
+| `web-app` | `apps/web/` — páginas, rotas, features | `npm run build --filter=web` |
 
 Detalhes completos em [AGENTS.md](AGENTS.md).

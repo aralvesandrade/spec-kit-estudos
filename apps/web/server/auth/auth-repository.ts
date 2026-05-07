@@ -35,15 +35,15 @@ export function findUserByEmail(email: string): UserRow | undefined {
 }
 
 export function findUserById(id: string): UserRow | undefined {
-  return db
-    .prepare("SELECT * FROM users WHERE id = ?")
-    .get(id) as UserRow | undefined
+  return db.prepare("SELECT * FROM users WHERE id = ?").get(id) as
+    | UserRow
+    | undefined
 }
 
 export function findSessionById(id: string): SessionRow | undefined {
-  return db
-    .prepare("SELECT * FROM sessions WHERE id = ?")
-    .get(id) as SessionRow | undefined
+  return db.prepare("SELECT * FROM sessions WHERE id = ?").get(id) as
+    | SessionRow
+    | undefined
 }
 
 export function createSession(session: SessionRow): void {

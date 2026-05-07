@@ -23,12 +23,17 @@ function rowToCustomer(row: CustomerRow): Customer {
 
 export function findCustomersByUserId(userId: string): Customer[] {
   const rows = db
-    .prepare("SELECT * FROM customers WHERE user_id = ? ORDER BY created_at DESC")
+    .prepare(
+      "SELECT * FROM customers WHERE user_id = ? ORDER BY created_at DESC"
+    )
     .all(userId) as CustomerRow[]
   return rows.map(rowToCustomer)
 }
 
-export function findCustomerById(id: string, userId: string): Customer | undefined {
+export function findCustomerById(
+  id: string,
+  userId: string
+): Customer | undefined {
   const row = db
     .prepare("SELECT * FROM customers WHERE id = ? AND user_id = ?")
     .get(id, userId) as CustomerRow | undefined

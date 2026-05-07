@@ -140,4 +140,4 @@
 - [ ] New shared components/hooks go to `packages/ui/src/`, app-specific go to `apps/web/src/`
 - [ ] File names use kebab-case
 - [ ] New `packages/ui` exports added to `package.json#exports`
-- [ ] `turbo typecheck && turbo lint && turbo build` will pass after implementation
+- [ ] `npm run typecheck && npm run lint && npm run build` will pass after implementation

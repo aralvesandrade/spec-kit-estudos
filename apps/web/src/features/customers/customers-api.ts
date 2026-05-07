@@ -11,11 +11,17 @@ export async function listCustomersApi(): Promise<ListCustomersResult> {
   const res = await fetch("/api/customers", {
     credentials: "include",
   })
-  const data = (await res.json()) as { customers?: Customer[]; error?: CustomerError }
+  const data = (await res.json()) as {
+    customers?: Customer[]
+    error?: CustomerError
+  }
   if (!res.ok) {
     return {
       success: false,
-      error: data.error ?? { code: String(res.status), message: "Erro ao carregar clientes" },
+      error: data.error ?? {
+        code: String(res.status),
+        message: "Erro ao carregar clientes",
+      },
     }
   }
   return { success: true, customers: data.customers ?? [] }
@@ -30,11 +36,17 @@ export async function createCustomerApi(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData),
   })
-  const data = (await res.json()) as { customer?: Customer; error?: CustomerError }
+  const data = (await res.json()) as {
+    customer?: Customer
+    error?: CustomerError
+  }
   if (!res.ok) {
     return {
       success: false,
-      error: data.error ?? { code: String(res.status), message: "Erro ao criar cliente" },
+      error: data.error ?? {
+        code: String(res.status),
+        message: "Erro ao criar cliente",
+      },
     }
   }
   return { success: true, customer: data.customer! }
@@ -44,11 +56,17 @@ export async function getCustomerApi(id: string): Promise<GetCustomerResult> {
   const res = await fetch(`/api/customers/${id}`, {
     credentials: "include",
   })
-  const data = (await res.json()) as { customer?: Customer; error?: CustomerError }
+  const data = (await res.json()) as {
+    customer?: Customer
+    error?: CustomerError
+  }
   if (!res.ok) {
     return {
       success: false,
-      error: data.error ?? { code: String(res.status), message: "Erro ao carregar cliente" },
+      error: data.error ?? {
+        code: String(res.status),
+        message: "Erro ao carregar cliente",
+      },
     }
   }
   return { success: true, customer: data.customer! }

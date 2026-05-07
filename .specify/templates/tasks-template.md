@@ -23,10 +23,10 @@ description: "Task list template for feature implementation"
 - **App-only feature**: `apps/web/src/components/`, `apps/web/src/[feature]/`
 - **Shared primitive**: `packages/ui/src/components/`, `packages/ui/src/hooks/`, `packages/ui/src/lib/`
 - **Test files**: colocated next to source (e.g., `button.test.tsx` next to `button.tsx`)
-- **Build verify**: `turbo build --filter=[app-or-package]`
-- **Type check**: `turbo typecheck`
-- **Lint**: `turbo lint`
-- **Format**: `turbo format`
+- **Build verify**: `npm run build --filter=[app-or-package]`
+- **Type check**: `npm run typecheck`
+- **Lint**: `npm run lint`
+- **Format**: `npm run format`
 - **Tests**: `vitest run`
 
 <!-- 
@@ -54,7 +54,7 @@ description: "Task list template for feature implementation"
 
 - [ ] T001 Identify target module(s) per plan.md (Option A / B / C)
 - [ ] T002 [P] Run `npm install` if new dependencies added to any package.json
-- [ ] T003 [P] Verify `turbo typecheck && turbo lint` pass on clean branch
+- [ ] T003 [P] Verify `npm run typecheck && npm run lint` pass on clean branch
 
 ---
 
@@ -67,7 +67,7 @@ description: "Task list template for feature implementation"
 - [ ] T004 [packages/ui only] Add new export path to `packages/ui/package.json#exports` if needed
 - [ ] T005 [P] Define shared TypeScript types/interfaces in `packages/ui/src/lib/`
 - [ ] T006 [P] Add `@workspace/ui` import in `apps/web` package.json if not present
-- [ ] T007 Verify `turbo build --filter=@workspace/ui` succeeds
+- [ ] T007 Verify `npm run build --filter=@workspace/ui` succeeds
 
 **Checkpoint**: Foundation ready — user story implementation can begin
 
@@ -92,8 +92,8 @@ description: "Task list template for feature implementation"
 - [ ] T013 [P] [US1] Create `packages/ui/src/hooks/use-[name].ts` if hook needed
 - [ ] T014 [US1] Add export to `packages/ui/package.json#exports` for new files
 - [ ] T015 [US1] Consume in `apps/web/src/components/[feature-component].tsx`
-- [ ] T016 [US1] Run `turbo format` to apply Prettier + tailwindcss plugin
-- [ ] T017 [US1] Verify `turbo typecheck && turbo lint && turbo build`
+- [ ] T016 [US1] Run `npm run format` to apply Prettier + tailwindcss plugin
+- [ ] T017 [US1] Verify `npm run typecheck && npm run lint && npm run build`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -114,7 +114,7 @@ description: "Task list template for feature implementation"
 
 - [ ] T020 [P] [US2] Create or extend component in `packages/ui/src/components/[name].tsx`
 - [ ] T021 [US2] Implement feature in `apps/web/src/components/[name].tsx`
-- [ ] T022 [US2] Run `turbo format && turbo typecheck && turbo lint`
+- [ ] T022 [US2] Run `npm run format && npm run typecheck && npm run lint`
 - [ ] T023 [US2] Integrate with User Story 1 components if needed
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
@@ -136,7 +136,7 @@ description: "Task list template for feature implementation"
 
 - [ ] T026 [P] [US3] Create or extend component in `packages/ui/src/components/[name].tsx`
 - [ ] T027 [US3] Implement feature in `apps/web/src/[feature]/[name].tsx`
-- [ ] T028 [US3] Run `turbo format && turbo typecheck && turbo lint`
+- [ ] T028 [US3] Run `npm run format && npm run typecheck && npm run lint`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -150,8 +150,8 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Quality gates and final validation
 
-- [ ] TXXX [P] Run `turbo format` across all modified packages
-- [ ] TXXX Run `turbo typecheck && turbo lint && turbo build` — all must pass
+- [ ] TXXX [P] Run `npm run format` across all modified packages
+- [ ] TXXX Run `npm run typecheck && npm run lint && npm run build` — all must pass
 - [ ] TXXX [P] Add/update `vitest run` tests if new logic added to `packages/ui/src/lib/`
 - [ ] TXXX Verify `@workspace/ui` exports match what `apps/web` imports
 - [ ] TXXX Code cleanup and dead-code removal

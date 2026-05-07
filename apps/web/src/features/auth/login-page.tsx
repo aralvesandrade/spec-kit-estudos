@@ -56,17 +56,14 @@ export function LoginPage() {
       <div className="w-full max-w-sm space-y-6">
         <div className="space-y-1">
           <h1 className="text-xl font-semibold">Entrar</h1>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             Use suas credenciais para acessar o sistema.
           </p>
         </div>
 
         <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
           <div className="space-y-1.5">
-            <label
-              htmlFor="email"
-              className="text-sm font-medium"
-            >
+            <label htmlFor="email" className="text-sm font-medium">
               E-mail
             </label>
             <input
@@ -80,16 +77,13 @@ export function LoginPage() {
               aria-invalid={
                 error !== null && !isStorageUnavailable ? true : undefined
               }
-              className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring aria-invalid:border-destructive w-full rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
               placeholder="voce@exemplo.com"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label
-              htmlFor="password"
-              className="text-sm font-medium"
-            >
+            <label htmlFor="password" className="text-sm font-medium">
               Senha
             </label>
             <input
@@ -103,7 +97,7 @@ export function LoginPage() {
               aria-invalid={
                 error !== null && !isStorageUnavailable ? true : undefined
               }
-              className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring aria-invalid:border-destructive w-full rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
               placeholder="••••••••"
             />
           </div>

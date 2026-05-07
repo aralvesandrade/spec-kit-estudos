@@ -20,10 +20,10 @@ UI primitives (buttons, inputs, layout) live in `packages/ui/src/components/`. A
 
 ### V. Quality Gates (NON-NEGOTIABLE)
 All of the following must pass before a feature is considered complete:
-- `turbo typecheck` — zero TypeScript errors
-- `turbo lint` — zero ESLint errors
-- `turbo build` — successful build for all affected packages
-- `turbo format` — Prettier formatting applied (enforced via `prettier-plugin-tailwindcss`)
+- `npm run typecheck` — zero TypeScript errors
+- `npm run lint` — zero ESLint errors
+- `npm run build` — successful build for all affected packages
+- `npm run format` — Prettier formatting applied (enforced via `prettier-plugin-tailwindcss`)
 
 ### VI. Testing
 Vitest is the standard test framework for this project. Test files colocate with source: `button.test.tsx` next to `button.tsx`. Run with `vitest run`. Tests are not currently required for all code but must be added for any new shared utility in `packages/ui/src/lib/`.

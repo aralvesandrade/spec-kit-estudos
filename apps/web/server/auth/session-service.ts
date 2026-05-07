@@ -28,7 +28,9 @@ export function createNewSession(userId: string): SessionRow {
   return session
 }
 
-export function validateAndRefreshSession(sessionId: string): SessionRow | null {
+export function validateAndRefreshSession(
+  sessionId: string
+): SessionRow | null {
   const session = findSessionById(sessionId)
   if (!session) return null
   if (session.status !== "active") return null

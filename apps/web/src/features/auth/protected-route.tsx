@@ -7,7 +7,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   if (state.status === "loading") {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <span className="text-muted-foreground text-sm">Carregando…</span>
+        <span className="text-sm text-muted-foreground">Carregando…</span>
       </div>
     )
   }

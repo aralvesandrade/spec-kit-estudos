@@ -1,11 +1,7 @@
 import express from "express"
 import cookieParser from "cookie-parser"
 import { seed } from "./db/seed.ts"
-import {
-  handleLogin,
-  handleMe,
-  handleLogout,
-} from "./auth/auth-controller.ts"
+import { handleLogin, handleMe, handleLogout } from "./auth/auth-controller.ts"
 import {
   handleListCustomers,
   handleCreateCustomer,

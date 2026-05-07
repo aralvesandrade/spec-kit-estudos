@@ -28,7 +28,7 @@ export function CustomersPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <span className="text-muted-foreground text-sm">Carregando…</span>
+        <span className="text-sm text-muted-foreground">Carregando…</span>
       </div>
     )
   }
@@ -37,7 +37,7 @@ export function CustomersPage() {
     return (
       <div className="space-y-4">
         <h1 className="text-xl font-semibold">Clientes</h1>
-        <p className="text-destructive text-sm">{error}</p>
+        <p className="text-sm text-destructive">{error}</p>
       </div>
     )
   }
@@ -53,7 +53,7 @@ export function CustomersPage() {
 
       {customers.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-12 text-center">
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             Nenhum cliente cadastrado ainda.
           </p>
           <Button asChild size="sm">
@@ -64,7 +64,7 @@ export function CustomersPage() {
         <div className="overflow-x-auto rounded-md border">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-muted/50 border-b text-left">
+              <tr className="border-b bg-muted/50 text-left">
                 <th className="px-4 py-3 font-medium">Nome</th>
                 <th className="px-4 py-3 font-medium">E-mail</th>
                 <th className="px-4 py-3 font-medium">Data de cadastro</th>
@@ -72,17 +72,22 @@ export function CustomersPage() {
             </thead>
             <tbody>
               {customers.map((customer) => (
-                <tr key={customer.id} className="hover:bg-muted/25 border-b last:border-b-0">
+                <tr
+                  key={customer.id}
+                  className="border-b last:border-b-0 hover:bg-muted/25"
+                >
                   <td className="px-4 py-3">
                     <Link
                       to={`/clientes/${customer.id}`}
-                      className="text-primary font-medium hover:underline"
+                      className="font-medium text-primary hover:underline"
                     >
                       {customer.name}
                     </Link>
                   </td>
                   <td className="px-4 py-3">{customer.email}</td>
-                  <td className="px-4 py-3">{formatDate(customer.createdAt)}</td>
+                  <td className="px-4 py-3">
+                    {formatDate(customer.createdAt)}
+                  </td>
                 </tr>
               ))}
             </tbody>

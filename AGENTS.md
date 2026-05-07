@@ -23,9 +23,9 @@ This monorepo has two modules with distinct responsibilities. Agents must respec
 **Cannot import from**:
 - `apps/*`
 
-**Build command**: `turbo build --filter=@workspace/ui`
-**Type check**: `turbo typecheck --filter=@workspace/ui`
-**Lint**: `turbo lint --filter=@workspace/ui`
+**Build command**: `npm run build --filter=@workspace/ui`
+**Type check**: `npm run typecheck --filter=@workspace/ui`
+**Lint**: `npm run lint --filter=@workspace/ui`
 
 **File naming convention**: kebab-case (e.g., `use-media-query.ts`, `dialog.tsx`)
 
@@ -48,9 +48,9 @@ This monorepo has two modules with distinct responsibilities. Agents must respec
 - Internal paths of `packages/ui` (e.g., `../../packages/ui/src/...`)
 - Other `apps/*`
 
-**Build command**: `turbo build --filter=web`
-**Type check**: `turbo typecheck --filter=web`
-**Lint**: `turbo lint --filter=web`
+**Build command**: `npm run build --filter=web`
+**Type check**: `npm run typecheck --filter=web`
+**Lint**: `npm run lint --filter=web`
 **Dev server**: `npm run dev` (root) or `turbo dev --filter=web`
 
 **File naming convention**: kebab-case (e.g., `theme-provider.tsx`, `app.tsx`)
