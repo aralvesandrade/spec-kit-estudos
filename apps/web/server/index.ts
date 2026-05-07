@@ -6,6 +6,11 @@ import {
   handleMe,
   handleLogout,
 } from "./auth/auth-controller.ts"
+import {
+  handleListCustomers,
+  handleCreateCustomer,
+  handleGetCustomer,
+} from "./customers/customer-controller.ts"
 
 const app = express()
 const PORT = 3001
@@ -16,6 +21,10 @@ app.use(cookieParser())
 app.post("/api/auth/login", handleLogin)
 app.get("/api/auth/me", handleMe)
 app.post("/api/auth/logout", handleLogout)
+
+app.get("/api/customers", handleListCustomers)
+app.post("/api/customers", handleCreateCustomer)
+app.get("/api/customers/:id", handleGetCustomer)
 
 seed()
   .then(() => {

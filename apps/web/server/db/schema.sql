@@ -25,3 +25,15 @@ CREATE TABLE IF NOT EXISTS auth_attempts (
   failure_reason TEXT,
   attempted_at TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS customers (
+  id          TEXT PRIMARY KEY,
+  user_id     TEXT NOT NULL REFERENCES users(id),
+  name        TEXT NOT NULL,
+  email       TEXT NOT NULL,
+  phone       TEXT,
+  created_at  TEXT NOT NULL,
+  UNIQUE(user_id, email)
+);
+
+CREATE INDEX IF NOT EXISTS idx_customers_user_id ON customers(user_id);

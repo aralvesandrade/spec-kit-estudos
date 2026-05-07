@@ -3,6 +3,9 @@ import { LoginPage } from "@/features/auth/login-page.tsx"
 import { ProtectedRoute } from "@/features/auth/protected-route.tsx"
 import { AppShell } from "@/features/auth/app-shell.tsx"
 import { useAuth } from "@/features/auth/auth-provider.tsx"
+import { CustomersPage } from "@/features/customers/customers-page.tsx"
+import { CreateCustomerPage } from "@/features/customers/create-customer-page.tsx"
+import { CustomerDetailPage } from "@/features/customers/customer-detail-page.tsx"
 
 function PublicLoginRoute() {
   const { state } = useAuth()
@@ -44,6 +47,36 @@ export function App() {
             <ProtectedRoute>
               <AppShell>
                 <HomePage />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/clientes"
+          element={
+            <ProtectedRoute>
+              <AppShell>
+                <CustomersPage />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/clientes/novo"
+          element={
+            <ProtectedRoute>
+              <AppShell>
+                <CreateCustomerPage />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/clientes/:id"
+          element={
+            <ProtectedRoute>
+              <AppShell>
+                <CustomerDetailPage />
               </AppShell>
             </ProtectedRoute>
           }

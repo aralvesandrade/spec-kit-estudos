@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
-Current implementation plan: /specs/001-login-authentication/plan.md
+Current implementation plan: /specs/002-customer-registration/plan.md
 <!-- SPECKIT END -->
 
 Sempre responda em português do Brasil.
