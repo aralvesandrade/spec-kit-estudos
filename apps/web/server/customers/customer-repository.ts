@@ -26,7 +26,7 @@ export function findCustomersByUserId(userId: string): Customer[] {
     .prepare(
       "SELECT * FROM customers WHERE user_id = ? ORDER BY created_at DESC"
     )
-    .all(userId) as CustomerRow[]
+    .all(userId) as unknown as CustomerRow[]
   return rows.map(rowToCustomer)
 }
 
@@ -45,7 +45,7 @@ export function findCustomersByUserIdPaginated(
     .prepare(
       "SELECT * FROM customers WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?"
     )
-    .all(userId, limit, offset) as CustomerRow[]
+    .all(userId, limit, offset) as unknown as CustomerRow[]
   return { customers: rows.map(rowToCustomer), total }
 }
 

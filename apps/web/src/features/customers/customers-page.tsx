@@ -48,7 +48,7 @@ export function CustomersPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const page = Number(searchParams.get("page") ?? "1")
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["customers", page],
     queryFn: () => listCustomersApi({ page }),
   })
@@ -72,7 +72,17 @@ export function CustomersPage() {
       {(error || apiError) && (
         <Alert variant="destructive">
           <AlertDescription>
-            {apiError ?? "Erro ao carregar clientes."}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <span>{apiError ?? "Erro ao carregar clientes."}</span>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => void refetch()}
+                disabled={isRefetching}
+              >
+                {isRefetching ? "Tentando..." : "Tentar novamente"}
+              </Button>
+            </div>
           </AlertDescription>
         </Alert>
       )}

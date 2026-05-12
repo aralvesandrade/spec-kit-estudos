@@ -2,6 +2,7 @@ import { type ReactNode } from "react"
 import { Button } from "@workspace/ui/components/button"
 import { useAuth } from "./auth-provider.tsx"
 import { ThemeToggle } from "@/components/theme-toggle.tsx"
+import { AdminMenu } from "@/features/auth/admin-menu.tsx"
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { state, logout } = useAuth()
@@ -28,9 +29,17 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
-        {children}
-      </main>
+      <div className="mx-auto grid w-full max-w-5xl flex-1 gap-6 px-6 py-8 md:grid-cols-[220px_minmax(0,1fr)]">
+        <aside aria-label="Navegacao administrativa" className="space-y-3">
+          <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            Administracao
+          </p>
+          <AdminMenu />
+        </aside>
+        <main aria-label="Conteudo da secao" className="min-w-0">
+          {children}
+        </main>
+      </div>
     </div>
   )
 }

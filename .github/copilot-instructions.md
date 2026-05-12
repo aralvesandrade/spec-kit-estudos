@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
-Current implementation plan: /specs/003-add-shadcn/plan.md
+Current implementation plan: /specs/004-add-admin-menu/plan.md
 <!-- SPECKIT END -->
 
 Sempre responda em português do Brasil.

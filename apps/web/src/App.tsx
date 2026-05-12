@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom"
 import { LoginPage } from "@/features/auth/login-page.tsx"
 import { ProtectedRoute } from "@/features/auth/protected-route.tsx"
 import { AppShell } from "@/features/auth/app-shell.tsx"
@@ -36,51 +42,27 @@ function HomePage() {
   )
 }
 
+function ProtectedLayout() {
+  return (
+    <ProtectedRoute>
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </ProtectedRoute>
+  )
+}
+
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<PublicLoginRoute />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <AppShell>
-                <HomePage />
-              </AppShell>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/clientes"
-          element={
-            <ProtectedRoute>
-              <AppShell>
-                <CustomersPage />
-              </AppShell>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/clientes/novo"
-          element={
-            <ProtectedRoute>
-              <AppShell>
-                <CreateCustomerPage />
-              </AppShell>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/clientes/:id"
-          element={
-            <ProtectedRoute>
-              <AppShell>
-                <CustomerDetailPage />
-              </AppShell>
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<ProtectedLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/clientes" element={<CustomersPage />} />
+          <Route path="/clientes/novo" element={<CreateCustomerPage />} />
+          <Route path="/clientes/:id" element={<CustomerDetailPage />} />
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
