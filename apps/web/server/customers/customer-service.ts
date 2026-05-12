@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid"
 import {
   findCustomersByUserId,
+  findCustomersByUserIdPaginated,
   findCustomerById,
   createCustomer as createCustomerInDb,
 } from "./customer-repository.ts"
@@ -59,6 +60,14 @@ export function validateCreateCustomerInput(
 
 export function listCustomers(userId: string): Customer[] {
   return findCustomersByUserId(userId)
+}
+
+export function listCustomersPaginated(
+  userId: string,
+  page: number,
+  limit: number
+): { customers: Customer[]; total: number } {
+  return findCustomersByUserIdPaginated(userId, page, limit)
 }
 
 export function createCustomer(

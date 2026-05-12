@@ -2,7 +2,7 @@ import type { Request, Response } from "express"
 import { validateAndRefreshSession } from "../auth/session-service.ts"
 import {
   validateCreateCustomerInput,
-  listCustomers,
+  listCustomersPaginated,
   createCustomer,
   getCustomer,
 } from "./customer-service.ts"
@@ -26,8 +26,13 @@ export function handleListCustomers(req: Request, res: Response): void {
   }
 
   try {
-    const customers = listCustomers(userId)
-    res.json({ customers })
+    const rawPage = Number((req.query as Record<string, string>).page ?? "1")
+    const rawLimit = Number((req.query as Record<string, string>).limit ?? "20")
+    const page = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage
+    const limit = isNaN(rawLimit) || rawLimit < 1 ? 20 : Math.min(rawLimit, 100)
+    const { customers, total } = listCustomersPaginated(userId, page, limit)
+    const totalPages = Math.ceil(total / limit)
+    res.json({ customers, total, page, totalPages })
   } catch {
     res.status(500).json({ error: makeCustomerError("internal-error") })
   }

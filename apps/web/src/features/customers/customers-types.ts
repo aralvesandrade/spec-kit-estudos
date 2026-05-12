@@ -18,8 +18,20 @@ export interface CustomerError {
   fields?: { field: string; message: string }[]
 }
 
+export interface PaginatedCustomersResponse {
+  customers: Customer[]
+  total: number
+  page: number
+  totalPages: number
+}
+
+export interface ListCustomersParams {
+  page?: number
+  limit?: number
+}
+
 export type ListCustomersResult =
-  | { success: true; customers: Customer[] }
+  | { success: true; data: PaginatedCustomersResponse }
   | { success: false; error: CustomerError }
 
 export type CreateCustomerResult =

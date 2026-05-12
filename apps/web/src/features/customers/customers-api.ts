@@ -2,17 +2,28 @@ import type {
   Customer,
   CustomerError,
   ListCustomersResult,
+  ListCustomersParams,
+  PaginatedCustomersResponse,
   CreateCustomerResult,
   GetCustomerResult,
   CustomerFormData,
 } from "./customers-types.ts"
 
-export async function listCustomersApi(): Promise<ListCustomersResult> {
-  const res = await fetch("/api/customers", {
+export async function listCustomersApi(
+  params: ListCustomersParams = {}
+): Promise<ListCustomersResult> {
+  const query = new URLSearchParams()
+  if (params.page !== undefined) query.set("page", String(params.page))
+  if (params.limit !== undefined) query.set("limit", String(params.limit))
+  const qs = query.toString()
+  const res = await fetch(`/api/customers${qs ? `?${qs}` : ""}`, {
     credentials: "include",
   })
   const data = (await res.json()) as {
     customers?: Customer[]
+    total?: number
+    page?: number
+    totalPages?: number
     error?: CustomerError
   }
   if (!res.ok) {
@@ -24,7 +35,13 @@ export async function listCustomersApi(): Promise<ListCustomersResult> {
       },
     }
   }
-  return { success: true, customers: data.customers ?? [] }
+  const paginatedData: PaginatedCustomersResponse = {
+    customers: data.customers ?? [],
+    total: data.total ?? 0,
+    page: data.page ?? 1,
+    totalPages: data.totalPages ?? 1,
+  }
+  return { success: true, data: paginatedData }
 }
 
 export async function createCustomerApi(

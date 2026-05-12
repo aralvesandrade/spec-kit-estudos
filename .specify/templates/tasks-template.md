@@ -20,14 +20,17 @@ description: "Task list template for feature implementation"
 
 ## Path Conventions
 
-- **App-only feature**: `apps/web/src/components/`, `apps/web/src/[feature]/`
-- **Shared primitive**: `packages/ui/src/components/`, `packages/ui/src/hooks/`, `packages/ui/src/lib/`
-- **Test files**: colocated next to source (e.g., `button.test.tsx` next to `button.tsx`)
-- **Build verify**: `npm run build --filter=[app-or-package]`
+- **Frontend feature**: `apps/web/src/features/<feature>/` (kebab-case files)
+- **App-level component**: `apps/web/src/components/`
+- **Shared UI primitive**: `packages/ui/src/components/`, `packages/ui/src/hooks/`, `packages/ui/src/lib/`
+- **Backend domain**: `apps/web/server/<domain>/` (controller, service, repository, types, errors)
+- **SQLite schema**: `apps/web/server/db/schema.sql`
+- **Test files (when Vitest is installed)**: colocated next to source (`button.test.tsx` next to `button.tsx`)
+- **Build verify**: `npm run build --filter=[web|@workspace/ui]`
 - **Type check**: `npm run typecheck`
 - **Lint**: `npm run lint`
 - **Format**: `npm run format`
-- **Tests**: `vitest run`
+- **Tests**: only include if Vitest is installed (`vitest run`)
 
 <!-- 
   ============================================================================
@@ -52,7 +55,7 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Project initialization and structure for this feature
 
-- [ ] T001 Identify target module(s) per plan.md (Option A / B / C)
+- [ ] T001 Identify target module(s) per plan.md (Option A / B / C / D)
 - [ ] T002 [P] Run `npm install` if new dependencies added to any package.json
 - [ ] T003 [P] Verify `npm run typecheck && npm run lint` pass on clean branch
 
@@ -60,83 +63,85 @@ description: "Task list template for feature implementation"
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Shared types, exports, and cross-cutting setup that user stories depend on
+**Purpose**: Shared types, exports, schema changes, and cross-cutting setup that user stories depend on
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [ ] T004 [packages/ui only] Add new export path to `packages/ui/package.json#exports` if needed
-- [ ] T005 [P] Define shared TypeScript types/interfaces in `packages/ui/src/lib/`
-- [ ] T006 [P] Add `@workspace/ui` import in `apps/web` package.json if not present
-- [ ] T007 Verify `npm run build --filter=@workspace/ui` succeeds
+- [ ] T005 [P] Define shared TypeScript types/interfaces in `packages/ui/src/lib/` or `apps/web/src/features/<feature>/`
+- [ ] T006 [backend only] Update `apps/web/server/db/schema.sql` if new tables/columns needed
+- [ ] T007 [backend only] Update `apps/web/server/db/seed.ts` if seed data needed for new entities
+- [ ] T008 Verify `npm run build --filter=@workspace/ui` succeeds (if packages/ui changed)
 
 **Checkpoint**: Foundation ready — user story implementation can begin
 
 ---
 
-## Phase 3: User Story 1 - [Title] (Priority: P1) 🎯 MVP
+## Phase 3: Backend - [Domain] *(include only if feature touches `apps/web/server/`)*
+
+**Purpose**: Express domain layer following the layered pattern (controller → service → repository)
+
+- [ ] T009 [P] Create `apps/web/server/<domain>/<domain>-types.ts` — TypeScript types for the domain
+- [ ] T010 [P] Create `apps/web/server/<domain>/<domain>-errors.ts` — domain error classes/constants
+- [ ] T011 Create `apps/web/server/<domain>/<domain>-repository.ts` — SQLite queries using `db` from `server/db/client.ts`
+- [ ] T012 Create `apps/web/server/<domain>/<domain>-service.ts` — business logic, imports repository
+- [ ] T013 Create `apps/web/server/<domain>/<domain>-controller.ts` — Express handlers, imports service
+- [ ] T014 Register new routes in `apps/web/server/index.ts` (`app.[method]("/api/[resource]", handler)`)
+- [ ] T015 Verify `npm run typecheck --filter=web` passes
+
+**Checkpoint**: Backend domain functional — can be tested via `curl` or API client
+
+---
+
+## Phase 4: User Story 1 - [Title] (Priority: P1) 🎯 MVP
 
 **Goal**: [Brief description of what this story delivers]
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
-
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
-
-- [ ] T010 [P] [US1] Unit test for [component/hook] in `packages/ui/src/components/[name].test.tsx`
-- [ ] T011 [P] [US1] Integration test for [user journey] in `apps/web/src/[feature]/[name].test.tsx`
-
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create `packages/ui/src/components/[name].tsx` (kebab-case, PascalCase export)
-- [ ] T013 [P] [US1] Create `packages/ui/src/hooks/use-[name].ts` if hook needed
-- [ ] T014 [US1] Add export to `packages/ui/package.json#exports` for new files
-- [ ] T015 [US1] Consume in `apps/web/src/components/[feature-component].tsx`
-- [ ] T016 [US1] Run `npm run format` to apply Prettier + tailwindcss plugin
-- [ ] T017 [US1] Verify `npm run typecheck && npm run lint && npm run build`
+- [ ] T016 [P] [US1] Create `packages/ui/src/components/[name].tsx` (kebab-case, PascalCase export) if shared primitive needed
+- [ ] T017 [P] [US1] Create `packages/ui/src/hooks/use-[name].ts` if shared hook needed
+- [ ] T018 [US1] Add export to `packages/ui/package.json#exports` for new files (if packages/ui changed)
+- [ ] T019 [P] [US1] Create `apps/web/src/features/<feature>/<feature>-api.ts` — TanStack Query hooks + fetch calls to `/api/[resource]`
+- [ ] T020 [US1] Create `apps/web/src/features/<feature>/[page-name]-page.tsx` — React page component
+- [ ] T021 [US1] Register route in `apps/web/src/App.tsx` if new page
+- [ ] T022 [US1] Run `npm run format` to apply Prettier + tailwindcss plugin
+- [ ] T023 [US1] Verify `npm run typecheck && npm run lint && npm run build`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
 ---
 
-## Phase 4: User Story 2 - [Title] (Priority: P2)
+## Phase 5: User Story 2 - [Title] (Priority: P2)
 
 **Goal**: [Brief description of what this story delivers]
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
-
-- [ ] T018 [P] [US2] Unit test in `packages/ui/src/components/[name].test.tsx`
-- [ ] T019 [P] [US2] Integration test in `apps/web/src/[feature]/[name].test.tsx`
-
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create or extend component in `packages/ui/src/components/[name].tsx`
-- [ ] T021 [US2] Implement feature in `apps/web/src/components/[name].tsx`
-- [ ] T022 [US2] Run `npm run format && npm run typecheck && npm run lint`
-- [ ] T023 [US2] Integrate with User Story 1 components if needed
+- [ ] T024 [P] [US2] Create or extend component in `packages/ui/src/components/[name].tsx` or `apps/web/src/features/<feature>/`
+- [ ] T025 [US2] Implement feature logic
+- [ ] T026 [US2] Run `npm run format && npm run typecheck && npm run lint`
+- [ ] T027 [US2] Integrate with User Story 1 components if needed
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
 ---
 
-## Phase 5: User Story 3 - [Title] (Priority: P3)
+## Phase 6: User Story 3 - [Title] (Priority: P3)
 
 **Goal**: [Brief description of what this story delivers]
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
-
-- [ ] T024 [P] [US3] Unit test in `packages/ui/src/components/[name].test.tsx`
-- [ ] T025 [P] [US3] Integration test in `apps/web/src/[feature]/[name].test.tsx`
-
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create or extend component in `packages/ui/src/components/[name].tsx`
-- [ ] T027 [US3] Implement feature in `apps/web/src/[feature]/[name].tsx`
-- [ ] T028 [US3] Run `npm run format && npm run typecheck && npm run lint`
+- [ ] T028 [P] [US3] Create or extend component in `packages/ui/src/components/[name].tsx` or `apps/web/src/features/<feature>/`
+- [ ] T029 [US3] Implement feature logic
+- [ ] T030 [US3] Run `npm run format && npm run typecheck && npm run lint`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -152,8 +157,8 @@ description: "Task list template for feature implementation"
 
 - [ ] TXXX [P] Run `npm run format` across all modified packages
 - [ ] TXXX Run `npm run typecheck && npm run lint && npm run build` — all must pass
-- [ ] TXXX [P] Add/update `vitest run` tests if new logic added to `packages/ui/src/lib/`
-- [ ] TXXX Verify `@workspace/ui` exports match what `apps/web` imports
+- [ ] TXXX Verify `@workspace/ui` exports match what `apps/web` imports (no broken imports)
+- [ ] TXXX [backend] Verify all new endpoints return correct HTTP status codes and `{ error: string }` on failure
 - [ ] TXXX Code cleanup and dead-code removal
 
 ---
@@ -164,47 +169,25 @@ description: "Task list template for feature implementation"
 
 - **Setup (Phase 1)**: No dependencies - can start immediately
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Stories (Phase 3+)**: All depend on Foundational phase completion
-  - User stories can then proceed in parallel (if staffed)
-  - Or sequentially in priority order (P1 → P2 → P3)
+- **Backend (Phase 3)**: Depends on Foundational completion - can run in parallel with frontend user stories if no data dependency
+- **User Stories (Phase 4+)**: Depend on Foundational + Backend (if applicable) completion
+  - User stories can proceed in parallel (if staffed) or sequentially by priority (P1 → P2 → P3)
 - **Polish (Final Phase)**: Depends on all desired user stories being complete
-
-### User Story Dependencies
-
-- **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
-- **User Story 2 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently testable
-- **User Story 3 (P3)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently testable
 
 ### Within Each User Story
 
-- Tests (if included) MUST be written and FAIL before implementation
-- Models before services
-- Services before endpoints
-- Core implementation before integration
+- `packages/ui` changes before `apps/web` consumption
+- Backend domain before frontend API client
+- API client before React page components
+- Core implementation before route registration
 - Story complete before moving to next priority
 
 ### Parallel Opportunities
 
 - All Setup tasks marked [P] can run in parallel
 - All Foundational tasks marked [P] can run in parallel (within Phase 2)
-- Once Foundational phase completes, all user stories can start in parallel (if team capacity allows)
-- All tests for a user story marked [P] can run in parallel
-- Models within a story marked [P] can run in parallel
-- Different user stories can be worked on in parallel by different team members
-
----
-
-## Parallel Example: User Story 1
-
-```bash
-# Launch all tests for User Story 1 together (if tests requested):
-Task: "Contract test for [endpoint] in tests/contract/test_[name].py"
-Task: "Integration test for [user journey] in tests/integration/test_[name].py"
-
-# Launch all models for User Story 1 together:
-Task: "Create [Entity1] model in src/models/[entity1].py"
-Task: "Create [Entity2] model in src/models/[entity2].py"
-```
+- Backend domain tasks (types, errors) marked [P] can run in parallel
+- Once Foundational + Backend phases complete, all user stories can start in parallel
 
 ---
 
@@ -214,37 +197,26 @@ Task: "Create [Entity2] model in src/models/[entity2].py"
 
 1. Complete Phase 1: Setup
 2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
-3. Complete Phase 3: User Story 1
-4. **STOP and VALIDATE**: Test User Story 1 independently
-5. Deploy/demo if ready
+3. Complete Phase 3: Backend (if full-stack feature)
+4. Complete Phase 4: User Story 1
+5. **STOP and VALIDATE**: Test User Story 1 independently
+6. Deploy/demo if ready
 
 ### Incremental Delivery
 
-1. Complete Setup + Foundational → Foundation ready
+1. Complete Setup + Foundational + Backend → Foundation ready
 2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
 3. Add User Story 2 → Test independently → Deploy/Demo
-4. Add User Story 3 → Test independently → Deploy/Demo
-5. Each story adds value without breaking previous stories
-
-### Parallel Team Strategy
-
-With multiple developers:
-
-1. Team completes Setup + Foundational together
-2. Once Foundational is done:
-   - Developer A: User Story 1
-   - Developer B: User Story 2
-   - Developer C: User Story 3
-3. Stories complete and integrate independently
+4. Each story adds value without breaking previous stories
 
 ---
 
 ## Notes
 
-- [P] tasks = different files, no dependencies
+- [P] tasks = different files, no dependencies — can be done in parallel
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
-- Verify tests fail before implementing
+- Do NOT reference `vitest run` unless Vitest is declared in package.json
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence

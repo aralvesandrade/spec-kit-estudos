@@ -8,9 +8,11 @@
 ## Module Placement
 
 <!-- Which module(s) does this feature touch? -->
-- [ ] `apps/web/` — app-specific UI, pages, or features
+- [ ] `apps/web/src/` — frontend: pages, feature components, or routes
+- [ ] `apps/web/server/` — backend: new Express endpoint, domain, or schema change
 - [ ] `packages/ui/` — reusable component or utility added to shared lib
-- [ ] Both (requires new `@workspace/ui` export + consumer in `apps/web`)
+- [ ] Both frontend and backend (full-stack feature)
+- [ ] Both `packages/ui` and `apps/web` (requires new `@workspace/ui` export)
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -107,6 +109,29 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
+### Backend Requirements *(include if feature touches `apps/web/server/`)*
+
+<!--
+  Include this section only when the feature adds or changes Express endpoints,
+  SQLite schema, or backend business logic.
+-->
+
+- **BR-001**: API MUST expose endpoint `[METHOD] /api/[resource]`
+- **BR-002**: SQLite schema MUST [define table/column, e.g., "add `email` column to `users`"]
+- **BR-003**: Backend MUST validate [input field] before [action]
+- **BR-004**: Errors MUST return structured JSON `{ error: string }` with appropriate HTTP status
+
+### API Contract *(include if feature adds or changes endpoints)*
+
+<!--
+  Summarize the REST interface. Full contract goes in specs/<feature>/contracts/<feature>-api-contract.md
+-->
+
+| Method | Path | Request Body | Response | Notes |
+|--------|------|-------------|----------|-------|
+| `POST` | `/api/[resource]` | `{ field: type }` | `201 { id, ... }` | [auth required?] |
+| `GET` | `/api/[resource]/:id` | — | `200 { ... }` \| `404` | [auth required?] |
+
 ## Success Criteria *(mandatory)*
 
 <!--
@@ -137,7 +162,10 @@
 ## Constitution Check
 
 - [ ] Module placement follows dependency rules (`apps/web` → `@workspace/ui`, never reversed)
-- [ ] New shared components/hooks go to `packages/ui/src/`, app-specific go to `apps/web/src/`
+- [ ] New shared components/hooks go to `packages/ui/src/`, app-specific go to `apps/web/src/features/<feature>/`
 - [ ] File names use kebab-case
 - [ ] New `packages/ui` exports added to `package.json#exports`
+- [ ] Backend domains (if any) follow layered pattern: controller → service → repository
+- [ ] New SQLite schema changes added to `apps/web/server/db/schema.sql`
+- [ ] New API endpoints registered in `apps/web/server/index.ts` and documented in contracts/
 - [ ] `npm run typecheck && npm run lint && npm run build` will pass after implementation

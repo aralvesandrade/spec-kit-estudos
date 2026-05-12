@@ -1,6 +1,7 @@
 import { type ReactNode } from "react"
 import { Button } from "@workspace/ui/components/button"
 import { useAuth } from "./auth-provider.tsx"
+import { ThemeToggle } from "@/components/theme-toggle.tsx"
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { state, logout } = useAuth()
@@ -20,6 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {email && (
               <span className="text-xs text-muted-foreground">{email}</span>
             )}
+            <ThemeToggle />
             <Button variant="outline" size="sm" onClick={handleLogout}>
               Sair
             </Button>

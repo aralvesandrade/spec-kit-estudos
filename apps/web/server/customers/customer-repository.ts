@@ -30,6 +30,25 @@ export function findCustomersByUserId(userId: string): Customer[] {
   return rows.map(rowToCustomer)
 }
 
+export function findCustomersByUserIdPaginated(
+  userId: string,
+  page: number,
+  limit: number
+): { customers: Customer[]; total: number } {
+  const offset = (page - 1) * limit
+  const total = (
+    db
+      .prepare("SELECT COUNT(*) as count FROM customers WHERE user_id = ?")
+      .get(userId) as { count: number }
+  ).count
+  const rows = db
+    .prepare(
+      "SELECT * FROM customers WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?"
+    )
+    .all(userId, limit, offset) as CustomerRow[]
+  return { customers: rows.map(rowToCustomer), total }
+}
+
 export function findCustomerById(
   id: string,
   userId: string

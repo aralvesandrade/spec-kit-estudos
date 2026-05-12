@@ -1,7 +1,14 @@
-import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card"
+import { Skeleton } from "@workspace/ui/components/skeleton"
+import { Alert, AlertDescription } from "@workspace/ui/components/alert"
 import { getCustomerApi } from "./customers-api.ts"
-import type { Customer } from "./customers-types.ts"
 
 function formatDate(isoString: string): string {
   return new Date(isoString).toLocaleDateString("pt-BR", {
@@ -13,32 +20,39 @@ function formatDate(isoString: string): string {
 
 export function CustomerDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const [customer, setCustomer] = useState<Customer | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!id) return
-    void (async () => {
-      const result = await getCustomerApi(id)
-      if (result.success) {
-        setCustomer(result.customer)
-      } else {
-        setError(result.error.message)
-      }
-      setIsLoading(false)
-    })()
-  }, [id])
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["customer", id],
+    queryFn: () => getCustomerApi(id!),
+    enabled: !!id,
+  })
+
+  const customer = data?.success ? data.customer : null
+  const apiError = data && !data.success ? data.error.message : null
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-sm text-muted-foreground">Carregando…</span>
+      <div className="space-y-6">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-6 w-48" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-32" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="grid grid-cols-3">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="col-span-2 h-4 w-40" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
-  if (error || !customer) {
+  if (error || apiError || !customer) {
     return (
       <div className="space-y-4">
         <Link
@@ -47,9 +61,11 @@ export function CustomerDetailPage() {
         >
           ← Voltar para clientes
         </Link>
-        <p className="text-sm text-destructive">
-          {error ?? "Cliente não encontrado."}
-        </p>
+        <Alert variant="destructive">
+          <AlertDescription>
+            {apiError ?? "Cliente não encontrado."}
+          </AlertDescription>
+        </Alert>
       </div>
     )
   }
@@ -65,34 +81,43 @@ export function CustomerDetailPage() {
 
       <h1 className="text-xl font-semibold">{customer.name}</h1>
 
-      <dl className="divide-y rounded-md border">
-        <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">Nome</dt>
-          <dd className="col-span-2 text-sm">{customer.name}</dd>
-        </div>
-        <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">E-mail</dt>
-          <dd className="col-span-2 text-sm">{customer.email}</dd>
-        </div>
-        <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
-            Telefone
-          </dt>
-          <dd className="col-span-2 text-sm">
-            {customer.phone ?? (
-              <span className="text-muted-foreground">Não informado</span>
-            )}
-          </dd>
-        </div>
-        <div className="grid grid-cols-3 px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
-            Data de cadastro
-          </dt>
-          <dd className="col-span-2 text-sm">
-            {formatDate(customer.createdAt)}
-          </dd>
-        </div>
-      </dl>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Informações</CardTitle>
+        </CardHeader>
+        <CardContent className="divide-y p-0">
+          <div className="grid grid-cols-3 px-6 py-3">
+            <span className="text-sm font-medium text-muted-foreground">
+              Nome
+            </span>
+            <span className="col-span-2 text-sm">{customer.name}</span>
+          </div>
+          <div className="grid grid-cols-3 px-6 py-3">
+            <span className="text-sm font-medium text-muted-foreground">
+              E-mail
+            </span>
+            <span className="col-span-2 text-sm">{customer.email}</span>
+          </div>
+          <div className="grid grid-cols-3 px-6 py-3">
+            <span className="text-sm font-medium text-muted-foreground">
+              Telefone
+            </span>
+            <span className="col-span-2 text-sm">
+              {customer.phone ?? (
+                <span className="text-muted-foreground">Não informado</span>
+              )}
+            </span>
+          </div>
+          <div className="grid grid-cols-3 px-6 py-3">
+            <span className="text-sm font-medium text-muted-foreground">
+              Data de cadastro
+            </span>
+            <span className="col-span-2 text-sm">
+              {formatDate(customer.createdAt)}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
